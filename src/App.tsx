@@ -10,32 +10,16 @@ import toast, { Toaster } from "react-hot-toast";
 import {RootState} from "./redux/reducers/store"
 import Contact from "./pages/Contact";
 import LoginTest from "./pages/login1";
+import LoanApplicationForm from "./components/LoanFrom";
+import { Dashboard } from "./components/Dashboard";
 const Home = lazy(() => import("./pages/Home"));
-const Login = lazy(() => import("./pages/Login"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    axios
-      .get(`${Server}user/me`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.status >= 200 && res.status < 300) {
-          dispatch(userExited(res.data.data));
-          if (!user) {
-            toast.success(res.data.message);
-          }
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        dispatch(userNotExited());
-      });
-  }, []);
+
 
   return (
     <BrowserRouter>
@@ -46,19 +30,23 @@ function App() {
                 <ProtectRoute user={user} />
             }
           >
-            <Route path="/" element={<Home />} />
             <Route path="/group" element={<Contact />} />
+          
+
           </Route>
           <Route
             path="/login"
             element={
             <ProtectRoute user={!user} redirect="/">
-                <Login />
+                <LoginTest />
               </ProtectRoute>
             }
           />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/dashborad" element={<Dashboard />} />
           <Route path="/login1" element={<LoginTest />} />
+          <Route path="/loan/application" element={<LoanApplicationForm />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

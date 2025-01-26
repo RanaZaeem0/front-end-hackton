@@ -6,7 +6,7 @@ interface ProtectRouteProps {
   user: any; // Replace `any` with your actual user type
 }
 
-const ProtectRoute: React.FC<ProtectRouteProps> = ({ children, redirect = "/login", user }) => {
+const ProtectRoute: React.FC<ProtectRouteProps> = ({ children, redirect = "/", user }) => {
   // Avoid re-rendering unnecessarily by ensuring stable conditions
   if (!user) {
     return <Navigate to={redirect} replace />;

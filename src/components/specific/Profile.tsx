@@ -20,21 +20,10 @@ function Profile() {
         color:"white"
       }
     }>
-        <Avatar
-        src={user?.avatar?.url}
-        sx={{
-            width:200,
-            height:200,
-            objectFit:"contain",
-            marginBottom:"1rem",
-            border:"5px solid black",
-            backgroundColor:"gray"
-        }}
-        />
+ 
      
      {loader ? <h1>loading</h1> :<>
       <ProfileCard text={'username'} Heading={`${user?.username}`}/>
-        <ProfileCard text={'Bio'} Heading={`${user?.bio}`}/>
         <ProfileCard text={'Name'} Heading={`${user?.name}`}/></>}
     </Stack>
   )

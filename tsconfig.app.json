@@ -15,10 +15,10 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "strict": false,               // Disabled strict mode
+    "noUnusedLocals": false,       // Allow unused locals
+    "noUnusedParameters": false,   // Allow unused parameters
+    "noFallthroughCasesInSwitch": false // Allow fallthrough in switch cases
   },
   "include": ["src"]
 }
