@@ -7,7 +7,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { Server } from '../constants/config';
-import { UseDispatch } from 'react-redux';
+import { useDispatch, UseDispatch } from 'react-redux';
+import { userExited } from '../redux/reducers/auth';
 
 interface LoginSchema {
   email: string;
@@ -29,7 +30,7 @@ function AdminLogin() {
     setIsDark(savedTheme === 'dark');
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
   }, []);
-const dispatch = UseDispatch()
+const dispatch =  useDispatch()
 
 
   const handleFormSubmit = async (data: LoginSchema) => {
@@ -43,6 +44,7 @@ const dispatch = UseDispatch()
       if(adminLogin.status >= 200 && adminLogin.status <=300){
         
       }
+      dispatch(userExited(adminLogin.data))
       console.log(adminLogin);
     } catch (error) {
       console.error('Error logging in:', error);
