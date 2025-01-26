@@ -1,5 +1,5 @@
-import  { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email';
 import LoginIcon from '@mui/icons-material/Login';
@@ -7,7 +7,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { Server } from '../constants/config';
-import { useDispatch, UseDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userExited } from '../redux/reducers/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,44 +16,70 @@ interface LoginSchema {
   password: string;
 }
 
-function AdminLogin() {
-  const [loadingBtn, setLoadingBtn] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+interface AuthState {
+  user: {
+    isAdmin: boolean;
+    _id: string;
+    name: string;
+    username: string;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
+  loader: boolean;
+  isAdmin: boolean;
+}
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<LoginSchema>();
+interface AdminLoginResponse {
+  status: number;
+  data: any;
+}
+
+function AdminLogin() {
+  const [loadingBtn, setLoadingBtn] = useState<boolean>(false);
+  const [isDark, setIsDark] = useState<boolean>(false);
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginSchema>();
+  const dispatch = useDispatch();
+  const auth = useSelector((state: { auth: AuthState }) => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     setIsDark(savedTheme === 'dark');
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
   }, []);
-const dispatch =  useDispatch()
 
-const navigate  = useNavigate()
-  const handleFormSubmit = async (data: LoginSchema) => {
+  const handleFormSubmit: SubmitHandler<LoginSchema> = async (data) => {
     setLoadingBtn(true);
     try {
-      // Replace with your actual backend login URL
-      const adminLogin = await axios.post(`${Server}admin/login`, {
+      const adminLogin: AdminLoginResponse = await axios.post(`${Server}admin/login`, {
         email: data.email,
         password: data.password
       });
-      if(adminLogin.status >= 200 && adminLogin.status <=300){
+
+      if (adminLogin.status >= 200 && adminLogin.status <= 300) {
+        dispatch(userExited(adminLogin.data));
+        navigate('/dashboard'); // Ensure the route is correctly named as 'dashboard'
+        console.log(data,"userdata");
         
+        localStorage.setItem("email",adminLogin.data.email)
+        localStorage.setItem("admin",adminLogin.data._id)
+
+        localStorage.setItem("accessToken",adminLogin.data.accessToken)
+
       }
-      dispatch(userExited(adminLogin.data))
-      console.log(adminLogin);
-      navigate('/dashboard')
     } catch (error) {
       console.error('Error logging in:', error);
+      // Optionally show a notification or message about the error
     } finally {
       setLoadingBtn(false);
     }
   };
+
+  useEffect(() => {
+    if (auth.user?.isAdmin) {
+      navigate('/dashboard');
+    }
+  }, [auth, navigate]);
 
   return (
     <div className={`min-h-screen w-full transition-colors duration-300 ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>

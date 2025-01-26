@@ -15,7 +15,9 @@ createRoot(document.getElementById("root")!).render(
    <Provider store={store}>
    <HelmetProvider>
       <CssBaseline />
+      
       <div className="" onContextMenu={(e) => e.preventDefault()}>
+        
         <App />
       </div>
     </HelmetProvider>

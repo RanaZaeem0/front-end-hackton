@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes, useNavigate } from "react-router-dom";
 import { ProtectRoute } from "./components/auth/ProtectRoute";
 import { LayoutLoader } from "./components/layout/Loader";
 import axios from "axios";
@@ -11,15 +11,13 @@ import {RootState} from "./redux/reducers/store"
 import Contact from "./pages/Contact";
 import LoginTest from "./pages/login1";
 import LoanApplicationForm from "./components/LoanFrom";
-import { Dashboard } from "./components/Dashboard";
+import Dashboard from "./components/Dashboard";
 const Home = lazy(() => import("./pages/Home"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-
-
 
   return (
     <BrowserRouter>
@@ -44,7 +42,7 @@ function App() {
           />
           <Route path="/contact" element={<Contact />} />
           <Route path="/" element={<Home />} />
-          <Route path="/dashborad" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin/login" element={<LoginTest />} />
           <Route path="/loan/application" element={<LoanApplicationForm />} />
 
