@@ -45,7 +45,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/" element={<Home />} />
           <Route path="/dashborad" element={<Dashboard />} />
-          <Route path="/login1" element={<LoginTest />} />
+          <Route path="/admin/login" element={<LoginTest />} />
           <Route path="/loan/application" element={<LoanApplicationForm />} />
 
           <Route path="*" element={<NotFound />} />

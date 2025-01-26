@@ -7,6 +7,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { Server } from '../constants/config';
+import { UseDispatch } from 'react-redux';
 
 interface LoginSchema {
   email: string;
@@ -28,17 +29,20 @@ function AdminLogin() {
     setIsDark(savedTheme === 'dark');
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
   }, []);
-
+const dispatch = UseDispatch()
 
 
   const handleFormSubmit = async (data: LoginSchema) => {
     setLoadingBtn(true);
     try {
       // Replace with your actual backend login URL
-      const adminLogin = await axios.post(`${Server}/user/login`, {
+      const adminLogin = await axios.post(`${Server}admin/login`, {
         email: data.email,
         password: data.password
       });
+      if(adminLogin.status >= 200 && adminLogin.status <=300){
+        
+      }
       console.log(adminLogin);
     } catch (error) {
       console.error('Error logging in:', error);
