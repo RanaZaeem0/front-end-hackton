@@ -47,6 +47,7 @@ const HomePage: React.FC = () => {
             <Button color="inherit">About</Button>
             <Button color="inherit">Services</Button>
             <Button color="inherit">Contact</Button>
+            <Button color="inherit" onClick={()=>router('/admin/login')}>admin</Button>
           </Toolbar>
         </AppBar>
 

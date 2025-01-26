@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Server } from '../constants/config';
 import { useDispatch, UseDispatch } from 'react-redux';
 import { userExited } from '../redux/reducers/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginSchema {
   email: string;
@@ -32,7 +33,7 @@ function AdminLogin() {
   }, []);
 const dispatch =  useDispatch()
 
-
+const navigate  = useNavigate()
   const handleFormSubmit = async (data: LoginSchema) => {
     setLoadingBtn(true);
     try {
@@ -46,6 +47,7 @@ const dispatch =  useDispatch()
       }
       dispatch(userExited(adminLogin.data))
       console.log(adminLogin);
+      navigate('/dashboard')
     } catch (error) {
       console.error('Error logging in:', error);
     } finally {
